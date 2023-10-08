@@ -17,8 +17,8 @@ class Transpiler
     {
         this.projectFilePath = Path.GetFullPath(projectFilePath);
         this.swiftPackageName = Path.GetFileNameWithoutExtension(projectFilePath);
-        this.swiftPackageDir = Path.Combine(outputDir, swiftPackageName);
-        this.sourcesDir = Path.Combine(swiftPackageDir, "Sources", swiftPackageName);
+        this.swiftPackageDir = outputDir;
+        this.sourcesDir = outputDir;
     }
     static Transpiler()
     {

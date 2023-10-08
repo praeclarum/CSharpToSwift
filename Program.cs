@@ -17,8 +17,7 @@ if (!File.Exists(projectFilePath)) {
 }
 string outputDir = args[1];
 if (!Directory.Exists(outputDir)) {
-    Console.WriteLine($"Output directory {outputDir} does not exist.");
-    return 1;
+    Directory.CreateDirectory(outputDir);
 }
 
 try {
