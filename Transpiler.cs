@@ -79,7 +79,9 @@ class Transpiler
         TextWriter NewSwiftWriter(string swiftName) {
             var fileName = $"{swiftName}.swift";
             var filePath = System.IO.Path.Combine(sourcesDir, fileName);
-            return new System.IO.StreamWriter(filePath);
+            var w = new System.IO.StreamWriter(filePath);
+            w.WriteLine($"// This file was generated from {Path.GetFileName(projectFileName)} by CSharpToSwift version {typeof(Transpiler).Assembly.GetName().Version}");
+            return w;
         }
         using (var pw = new StreamWriter(Path.Combine(swiftPackageDir, "Package.swift"))) {
             pw.WriteLine($"// swift-tools-version: 5.6");
