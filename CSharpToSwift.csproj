@@ -5,6 +5,17 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>cs2swift</ToolCommandName>
+    <PackageOutputPath>.\PackageOutput</PackageOutputPath>
+    <PackageId>CSharpToSwift</PackageId>
+    <PackageDescription>Convert C# code to Swift</PackageDescription>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>Swift;iOS;Mac;Xamarin;</PackageTags>
+    <PackageProjectUrl>https://github.com/praeclarum/CSharpToSwift</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
