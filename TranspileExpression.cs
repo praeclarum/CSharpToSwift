@@ -143,7 +143,7 @@ partial class Transpiler {
                     var ntext = nlit.Token.Text;
                     if (ntext[0] == '.')
                         ntext = "0" + ntext;
-                    if (ntext[^1] == 'f')
+                    if (ntext[^1] == 'f' && !ntext.StartsWith("0x", StringComparison.InvariantCultureIgnoreCase))
                         ntext = ntext.Substring(0, ntext.Length - 1);
                     if (ntext.EndsWith("ul", StringComparison.InvariantCultureIgnoreCase))
                         ntext = $"UInt64({ntext.Substring(0, ntext.Length - 2)})";
@@ -151,6 +151,8 @@ partial class Transpiler {
                         ntext = $"Int64({ntext.Substring(0, ntext.Length - 1)})";
                     else if (ntext.EndsWith("u", StringComparison.InvariantCultureIgnoreCase))
                         ntext = $"UInt32({ntext.Substring(0, ntext.Length - 1)})";
+                    else if (ntext.EndsWith("m", StringComparison.InvariantCultureIgnoreCase))
+                        ntext = $"Int32({ntext.Substring(0, ntext.Length - 1)})";
                     return ntext;
                 }
             case SyntaxKind.ObjectCreationExpression:
@@ -446,7 +448,7 @@ partial class Transpiler {
         return $"\"{name}\"";
     }
 
-        int TryEvaluateConstantIntExpression(ExpressionSyntax expr, SemanticModel model, int defaultInt)
+    int TryEvaluateConstantIntExpression(ExpressionSyntax expr, SemanticModel model, int defaultInt)
     {
         if (expr is LiteralExpressionSyntax lit && lit.IsKind(SyntaxKind.NumericLiteralExpression)) {
             return int.Parse(lit.Token.ValueText);
