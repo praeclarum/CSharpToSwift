@@ -1,6 +1,7 @@
 namespace CSharpToSwift;
 
 using System;
+using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -203,10 +204,8 @@ partial class Transpiler {
             case SyntaxKind.StringLiteralExpression:
                 var slit = (LiteralExpressionSyntax)value;
                 {
-                    var stext = slit.Token.Text;
-                    if (stext.Length > 0 && stext[0] == '@') {
-                        stext = "\"\"\"\n" + slit.Token.ValueText + "\n\"\"\"";
-                    }
+                    var stext = CSStringToSwift(slit.Token.Text, slit.Token.ValueText);
+                    
                     return stext;
                 }
             case SyntaxKind.SubtractAssignmentExpression:
@@ -258,6 +257,21 @@ partial class Transpiler {
                 Error($"Unsupported pattern: {value.Pattern.Kind()}");
                 return $"{exprCode}/*{value.Pattern.Kind()}: {value.Pattern.ToString().Trim()}*/";
         }
+    }
+
+    static readonly Regex unicodeLiteralRegex = new (@"\\u([0-9a-fA-F]{4})", RegexOptions.Compiled);
+
+    string CSStringToSwift(string csStringLiteralText, string csStringLiteralValueText) {
+        var stext = csStringLiteralText;
+        if (stext.Length > 0 && stext[0] == '@') {
+            stext = "\"\"\"\n" + csStringLiteralValueText + "\n\"\"\"";
+        }
+        stext = unicodeLiteralRegex.Replace(stext, m => {
+            var hex = m.Groups[1].Value;
+            var code = int.Parse(hex, System.Globalization.NumberStyles.HexNumber);
+            return $"\\u{{{hex}}}";
+        });
+        return stext;
     }
 
     private string TranspileArrayCreation(ArrayCreationExpressionSyntax array, SemanticModel model, string indent)
