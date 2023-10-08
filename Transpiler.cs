@@ -13,11 +13,11 @@ class Transpiler
     readonly string swiftPackageDir;
     readonly string sourcesDir;
     readonly MSBuildWorkspace workspace = MSBuildWorkspace.Create();
-    public Transpiler(string projectFilePath)
+    public Transpiler(string projectFilePath, string outputDir)
     {
         this.projectFilePath = Path.GetFullPath(projectFilePath);
         this.swiftPackageName = Path.GetFileNameWithoutExtension(projectFilePath);
-        this.swiftPackageDir = Path.Combine("/Users/fak/Work/CSharpToSwift", swiftPackageName);
+        this.swiftPackageDir = Path.Combine(outputDir, swiftPackageName);
         this.sourcesDir = Path.Combine(swiftPackageDir, "Sources", swiftPackageName);
     }
     static Transpiler()
