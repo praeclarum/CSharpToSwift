@@ -257,6 +257,12 @@ partial class Transpiler
                     GetTypeDeclarations(m, model, compilation, types);
                 }
                 break;
+            case SyntaxKind.FileScopedNamespaceDeclaration:
+                var fn = (FileScopedNamespaceDeclarationSyntax)node;
+                foreach (var m in fn.Members) {
+                    GetTypeDeclarations(m, model, compilation, types);
+                }
+                break;
             case SyntaxKind.CompilationUnit:
                 var cu = (CompilationUnitSyntax)node;
                 foreach (var m in cu.Members) {
